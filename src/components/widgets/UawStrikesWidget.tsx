@@ -2,6 +2,47 @@ import React, { useState, useEffect } from 'react';
 import { Scenario } from '@/data/scenarios';
 import { AlertOctagon, Info } from 'lucide-react';
 
+// Reusable Top-Down Car SVG Component
+const TopDownCar = ({ color, label, isReversed }) => (
+  <div className="relative w-32 h-16 flex items-center justify-center">
+    <svg
+      viewBox="0 0 120 60"
+      className="absolute inset-0 w-full h-full drop-shadow-xl"
+      style={{ transform: isReversed ? 'scaleX(-1)' : 'none' }}
+    >
+      {/* Wheels */}
+      <rect x="15" y="2" width="22" height="8" rx="3" fill="#000" />
+      <rect x="85" y="2" width="22" height="8" rx="3" fill="#000" />
+      <rect x="15" y="50" width="22" height="8" rx="3" fill="#000" />
+      <rect x="85" y="50" width="22" height="8" rx="3" fill="#000" />
+
+      {/* Main Body */}
+      <rect x="10" y="8" width="100" height="44" rx="12" fill={color} />
+      
+      {/* Windshield / Windows block */}
+      <rect x="35" y="12" width="40" height="36" rx="8" fill="#1e293b" />
+      
+      {/* Roof */}
+      <rect x="42" y="15" width="26" height="30" rx="4" fill={color} opacity="0.9" />
+
+      {/* Headlights */}
+      <rect x="105" y="12" width="6" height="12" rx="3" fill="#fef08a" className="animate-pulse" />
+      <rect x="105" y="36" width="6" height="12" rx="3" fill="#fef08a" className="animate-pulse" />
+
+      {/* Tail lights */}
+      <rect x="8" y="12" width="4" height="10" rx="2" fill="#ef4444" />
+      <rect x="8" y="38" width="4" height="10" rx="2" fill="#ef4444" />
+      
+      {/* Hood details */}
+      <path d="M 80 14 L 105 14" stroke="#ffffff20" strokeWidth="2" strokeLinecap="round" />
+      <path d="M 80 46 L 105 46" stroke="#ffffff20" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+    <span className="relative z-10 font-bold text-white text-lg tracking-widest drop-shadow-md">
+      {label}
+    </span>
+  </div>
+);
+
 export function UawStrikesWidget({ scenario }: { scenario: Scenario }) {
   const [playing, setPlaying] = useState(false);
   const [distance, setDistance] = useState(100);
@@ -32,7 +73,7 @@ export function UawStrikesWidget({ scenario }: { scenario: Scenario }) {
     if (playing && !crashed) {
       setUawSwerve(true);
       setPlaying(false);
-      setIsFinished(true); // Triggers Reset button immediately
+      setIsFinished(true);
     }
   };
 
@@ -40,7 +81,7 @@ export function UawStrikesWidget({ scenario }: { scenario: Scenario }) {
     if (playing && !crashed) {
       setAutoSwerve(true);
       setPlaying(false);
-      setIsFinished(true); // Triggers Reset button immediately
+      setIsFinished(true);
     }
   };
 
@@ -116,38 +157,38 @@ export function UawStrikesWidget({ scenario }: { scenario: Scenario }) {
       {/* Collision Track Visualization */}
       <div className="w-full h-48 bg-zinc-900 rounded-xl relative overflow-hidden border border-zinc-800 shadow-inner">
         {/* Road markings */}
-        <div className="absolute top-1/2 -translate-y-1/2 w-full border-t-2 border-dashed border-zinc-600" />
+        <div className="absolute top-1/2 -translate-y-1/2 w-full border-t-4 border-dashed border-zinc-600" />
         
         {/* Distance Indicator */}
         <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xs font-mono text-zinc-500">
           Distance: {distance}
         </div>
 
-        {/* UAW Truck */}
+        {/* UAW Car */}
         <div 
-          className="absolute top-1/2 -translate-y-1/2 w-24 h-16 bg-[#1a3a6e] border-2 border-white/20 rounded shadow-lg flex items-center justify-center transition-all duration-100"
+          className="absolute top-1/2 -translate-y-1/2 transition-all duration-100 ease-linear"
           style={{ 
             left: `${50 - (distance / 2)}%`, 
             transform: `translate(-100%, ${uawSwerve ? '-150%' : '-50%'}) rotate(${uawSwerve ? '-20deg' : '0deg'})` 
           }}
         >
-          <span className="font-bold text-white text-xl">UAW</span>
+          <TopDownCar color="#1a3a6e" label="UAW" isReversed={false} />
         </div>
 
-        {/* Automaker Truck */}
+        {/* Automaker Car */}
         <div 
-          className="absolute top-1/2 -translate-y-1/2 w-24 h-16 bg-[#003475] border-2 border-white/20 rounded shadow-lg flex items-center justify-center transition-all duration-100"
+          className="absolute top-1/2 -translate-y-1/2 transition-all duration-100 ease-linear"
           style={{ 
             right: `${50 - (distance / 2)}%`, 
             transform: `translate(100%, ${autoSwerve ? '150%' : '-50%'}) rotate(${autoSwerve ? '-20deg' : '0deg'})` 
           }}
         >
-          <span className="font-bold text-white text-xl text-center leading-tight">BIG 3</span>
+          <TopDownCar color="#4f46e5" label="BIG 3" isReversed={true} />
         </div>
         
         {crashed && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-rose-500 animate-pulse">
-            <AlertOctagon size={64} fill="currentColor" className="text-zinc-900" />
+            <AlertOctagon size={80} fill="currentColor" className="text-zinc-900" />
           </div>
         )}
       </div>
