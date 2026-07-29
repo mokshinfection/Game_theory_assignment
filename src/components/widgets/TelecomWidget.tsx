@@ -40,7 +40,7 @@ export function TelecomWidget({ scenario }: { scenario: Scenario }) {
         {/* Left: Interactive Controls */}
         <div className="space-y-8">
           <div>
-            <h3 className="font-serif text-2xl font-bold mb-4">You are the Incumbents</h3>
+            <h3 className="font-serif text-2xl font-bold mb-4">You are the Incumbents (residents) </h3>
             <p className="text-muted-foreground mb-6">Jio has entered with free voice and data. You must react.</p>
             <div className="flex flex-col gap-4">
               <button
