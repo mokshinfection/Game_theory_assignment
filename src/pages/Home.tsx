@@ -7,14 +7,35 @@ export default function Home() {
   return (
     <div className="min-h-[100dvh] w-full bg-background text-foreground selection:bg-primary/20">
       
+      {/* Embedded Shimmer Styles */}
+      <style>{`
+        .shimmer-text {
+          background: linear-gradient(100deg, #6E6C68 30%, #FF8A00 50%, #6E6C68 70%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+          to { background-position: -200% center; }
+        }
+      `}</style>
+
       {/* Hero */}
       <header className="pt-24 pb-16 px-6 max-w-7xl mx-auto text-center">
         <div className="inline-block mb-6 px-4 py-1.5 rounded-full border border-border bg-card text-sm font-bold tracking-widest uppercase text-muted-foreground">
           An Interactive Explainer
         </div>
+        
+        {/* Animated Shimmer Heading */}
         <h1 className="font-serif text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          Game Theory:<br/>
-          <span className="text-muted-foreground italic">Real World Rivalries</span>
+          <span className="shimmer-text block">
+            Game Theory:
+          </span>
+          <span className="shimmer-text italic block">
+            Real World Rivalries
+          </span>
         </h1>
 
         {/* Authors / Presented By */}
